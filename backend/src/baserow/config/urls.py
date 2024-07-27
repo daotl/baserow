@@ -27,5 +27,10 @@ urlpatterns = (
 )
 
 
-if settings.DEBUG and "silk" in settings.INSTALLED_APPS:
-    urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]
+if settings.DEBUG:
+    if "silk" in settings.INSTALLED_APPS:
+        urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]
+    if "debug_toolbar" in settings.INSTALLED_APPS:
+        from debug_toolbar.toolbar import debug_toolbar_urls
+        urlpatterns += debug_toolbar_urls()
+

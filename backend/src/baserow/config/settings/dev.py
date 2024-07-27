@@ -18,11 +18,16 @@ BASEROW_WEBHOOKS_MAX_CONSECUTIVE_TRIGGER_FAILURES = 4
 BASEROW_WEBHOOKS_MAX_RETRIES_PER_CALL = 4
 
 INSTALLED_APPS.insert(0, "daphne")  # noqa: F405
-INSTALLED_APPS += ["django_extensions", "silk"]  # noqa: F405
+INSTALLED_APPS += ["django_extensions", "silk", "debug_toolbar"]  # noqa: F405
 
 MIDDLEWARE += [  # noqa: F405
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "silk.middleware.SilkyMiddleware",
 ]
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": lambda request: True,
+}
 
 CACHALOT_UNCACHABLE_TABLES += [  # noqa: F405
     "silk_request",
@@ -45,6 +50,8 @@ CACHALOT_UNCACHABLE_TABLES += [  # noqa: F405
 SILKY_ANALYZE_QUERIES = bool(
     os.getenv("BASEROW_DANGEROUS_SILKY_ANALYZE_QUERIES", False)  # noqa: F405
 )
+
+REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += ("rest_framework.renderers.BrowsableAPIRenderer",)
 
 snoop.install()
 

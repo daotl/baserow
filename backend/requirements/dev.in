@@ -33,6 +33,7 @@ graphviz==0.20.3
 pytest-cov==5.0.0
 django-stubs==1.16.0
 django-stubs-ext==0.8.0
+django-debug-toolbar==4.4.6
 # ignored for now because of version conflict
 # djangorestframework-stubs==1.10.0
 mypy==1.10.0
