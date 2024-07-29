@@ -16,7 +16,9 @@ ENV DOCKER_USER=baserow_docker_user
 ENV POSTGRES_VERSION=15
 ENV BASEROW_IMAGE_TYPE="backend"
 
-RUN apt-get update &&  \
+RUN echo "deb http://mirrors.aliyun.com/debian/ bookworm main contrib non-free" > /etc/apt/sources.list && \
+    echo "deb-src http://mirrors.aliyun.com/debian/ bookworm main contrib non-free" >> /etc/apt/sources.list && \
+    apt-get update &&  \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
     build-essential \
@@ -59,6 +61,7 @@ COPY --chown=$UID:$GID ./backend/requirements/base.txt /baserow/requirements/
 RUN python3 -m venv /baserow/venv
 
 ENV PIP_CACHE_DIR=/tmp/baserow_pip_cache
+RUN pip3 config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 # hadolint ignore=SC1091,DL3042
 RUN --mount=type=cache,mode=777,target=$PIP_CACHE_DIR,uid=$UID,gid=$GID . /baserow/venv/bin/activate && pip3 install  -r /baserow/requirements/base.txt
 

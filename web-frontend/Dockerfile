@@ -7,7 +7,9 @@ ENV GID=${GID:-9999}
 
 # Perform all OS package installation and cleanup in one single command to reduce the
 # size of the created layer.
-RUN apt-get update && \
+RUN echo "deb http://mirrors.aliyun.com/debian/ bookworm main contrib non-free" > /etc/apt/sources.list && \
+    echo "deb-src http://mirrors.aliyun.com/debian/ bookworm main contrib non-free" >> /etc/apt/sources.list && \
+    apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
     build-essential \
